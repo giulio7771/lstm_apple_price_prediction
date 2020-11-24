@@ -11,7 +11,7 @@ from sklearn.preprocessing import MinMaxScaler
 import tensorflow as tf
 
 def app():
-    apple_training_complete = pd.read_csv('AAPL_2017.csv')
+    apple_training_complete = pd.read_csv('dataset/AAPL_2017.csv')
 
     #cabeçalho dos dados
     # Date  Open    High    Low    Close   Adj Close   Volume
@@ -59,7 +59,7 @@ def app():
     model.fit(features_set, labels, epochs = 3, batch_size = 32)
 
 
-    apple_testing_complete = pd.read_csv('AAPL_jan_2018.csv')
+    apple_testing_complete = pd.read_csv('dataset/AAPL_jan_2018.csv')
     apple_testing_processed = apple_testing_complete.iloc[:, 1:2].values
 
     apple_total = pd.concat((apple_training_complete['Open'], apple_testing_complete['Open']), axis=0)
