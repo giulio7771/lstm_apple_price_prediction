@@ -17,15 +17,13 @@ def app():
     # Date  Open    High    Low    Close   Adj Close   Volume
     # data; valor abertura; valor máximo; valor mínima; valor de fechamento; asd;  volume de negociações
 
-    #removendo a coluna do preço de fechamento
+    #removendo demais colunas ao preço de abertura
     apple_training_processed = apple_training_complete.iloc[:, 1:2].values
     
     #normalizando os dados
     scaler = MinMaxScaler(feature_range = (0, 1))
     apple_training_scaled = scaler.fit_transform(apple_training_processed)
 
-    #print(len(apple_training_scaled))
-    #return
     
     #alterando o formato dos dados para comportar a LSTM
     features_set = []
@@ -41,8 +39,7 @@ def app():
 
     features_set = np.reshape(features_set, (features_set.shape[0], features_set.shape[1], 1))
 
-
-    checkpoint_filepath = 'checkpoints/checkpoint'
+    checkpoint_filepath = 'checkpoints/checkpoint.ckpt'
     model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
     filepath=checkpoint_filepath,
     save_weights_only=True,
@@ -56,7 +53,7 @@ def app():
 
     model.load_weights(checkpoint_filepath)
 
-    model.fit(features_set, labels, epochs = 3, batch_size = 32)
+    model.fit(features_set, labels, epochs = 1, batch_size = 32, callbacks=[model_checkpoint_callback])
 
 
     apple_testing_complete = pd.read_csv('dataset/AAPL_jan_2018.csv')
